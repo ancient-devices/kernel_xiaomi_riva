@@ -374,7 +374,6 @@ static int probe(struct platform_device *pdev)
 	spdm_ipc_log_ctxt = NULL;
 #endif
 
-
 	return 0;
 
 no_spdm_device:
