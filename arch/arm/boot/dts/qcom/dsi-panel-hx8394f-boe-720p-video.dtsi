@@ -22,7 +22,7 @@
 		qcom,mdss-dsi-panel-controller = <&mdss_dsi0>;
 		qcom,mdss-dsi-panel-type = "dsi_video_mode";
 		qcom,mdss-dsi-panel-destination = "display_1";
-		qcom,mdss-dsi-panel-framerate = <63>;
+		qcom,mdss-dsi-panel-framerate = <65>;
 		qcom,mdss-dsi-virtual-channel-id = <0>;
 		qcom,mdss-dsi-stream = <0>;
 		qcom,mdss-dsi-panel-width = <720>;
@@ -43,14 +43,14 @@
 		qcom,mdss-dsi-underflow-color = <0x00>;
 		qcom,mdss-dsi-border-color = <0>;
 		qcom,mdss-dsi-on-command = [39 01 00 00 00 00 04 B9 FF 83 94
-				39 01 00 00 78 00 02 11 00
-				39 01 00 00 14 00 02 29 00
+				05 01 00 00 78 00 02 11 00
+				05 01 00 00 14 00 02 29 00
 				39 01 00 00 00 00 02 51 FF
 				39 01 00 00 05 00 0A C9 13 00 13 1E 31 1E 00 91 00
 				39 01 00 00 05 00 02 55 00
 				39 01 00 00 00 00 02 53 2C];
 		qcom,mdss-dsi-off-command = [05 01 00 00 32 00 02 28 00
-				39 01 00 00 78 00 02 10 00];
+				05 01 00 00 78 00 02 10 00];
 		qcom,mdss-dsi-on-command-state = "dsi_lp_mode";
 		qcom,mdss-dsi-off-command-state = "dsi_hs_mode";
 		qcom,mdss-dsi-panel-warm-command = [39 01 00 00 01 00 3B E0 07 08 09 0D 10 14 16 13 24 36 48 4A 58 6F 76 80 97 A5 A8 B5 C6 62 63 68 6F 72 78 7F 7F 00 02 08 0D 0C 0E 0F 10 24 36 48 4A 58 6F 78 82 99 A4 A0 B1 C0 5E 5E 64 6B 6C 73 7F 7F
@@ -83,9 +83,9 @@
 				39 01 00 00 0A 00 03 E4 01 00];
 		qcom,mdss-dsi-panel-ce-vivid-command = [
 				39 01 00 00 05 00 02 55 11
-				39 01 00 00 14 00 03 E4 01 42
-				39 01 00 00 14 00 20 E5 00 00 0B 08 01 00 00 00 00 00 00 05 1D 19 1F 05 ED 09 20 00 00 04 0B 02 01 08 08 07 02 04 02
-				39 01 00 00 14 00 16 E6 00 08 00 05 05 10 10 10 20 20 20 10 10 10 10 10 03 A0 01 0F 11];
+				39 01 00 00 05 00 03 E4 01 42
+				39 01 00 00 01 00 20 E5 00 00 0B 08 01 00 00 00 00 00 00 05 1D 19 1F 05 ED 09 20 00 00 04 0B 02 01 08 08 07 02 04 02
+				39 01 00 00 01 00 16 E6 00 08 00 05 05 10 10 10 20 20 20 10 10 10 10 10 03 A0 01 0F 11];
 		qcom,mdss-dsi-panel-ce-command-state = "dsi_lp_mode";
 		qcom,mdss-dsi-h-sync-pulse = <1>;
 		qcom,mdss-dsi-traffic-mode = "burst_mode";
@@ -112,6 +112,7 @@
 		qcom,mdss-dsi-panel-status-value =
 				<0x80 0x80 0x73 0x04 >,
 				<0x80 0x80 0x73 0x04 >;
+
 
 		qcom,mdss-dsi-bl-min-level = <1>;
 		qcom,mdss-dsi-bl-max-level = <4095>;
