@@ -712,6 +712,9 @@ else
 # Use make W=1 to enable them (see scripts/Makefile.extrawarn)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
 endif
+# Disable -Wmisleading-indentation, kernel developers should be that experienced
+# to know how and when to use statement indentations.
+KBUILD_CFLAGS += $(call cc-disable-warning, misleading-indentation)
 
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-const-variable)
 ifdef CONFIG_FRAME_POINTER
