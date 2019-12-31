@@ -35,6 +35,9 @@
 modules.builtin
 Module.symvers
 *.dwo
+*.sh
+out/
+telegram/
 
 #
 # Top-level generic files
