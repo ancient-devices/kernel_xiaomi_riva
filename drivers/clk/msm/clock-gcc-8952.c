@@ -262,7 +262,10 @@ static struct pll_freq_tbl apcs_c1_pll_freq[] = {
 	F_APCS_PLL(1497600000, 78, 0x0, 0x1, 0x0, 0x0, 0x0),
 	F_APCS_PLL(1516800000, 79, 0x0, 0x1, 0x0, 0x0, 0x0),
 	F_APCS_PLL(1536000000, 80, 0x0, 0x1, 0x0, 0x0, 0x0),
+	F_APCS_PLL(1574400000, 82, 0x0, 0x1, 0x0, 0x0, 0x0),
 	F_APCS_PLL(1651200000, 86, 0x0, 0x1, 0x0, 0x0, 0x0),
+	F_APCS_PLL(1770000000, 90, 0x0, 0x1, 0x0, 0x0, 0x0),
+	F_APCS_PLL(1844000000, 93, 0x0, 0x1, 0x0, 0x0, 0x0),
 };
 
 static struct pll_clk a53ss_c1_pll = {
@@ -807,6 +810,7 @@ static struct clk_freq_tbl ftbl_gcc_oxili_gfx3d_clk_8917[] = {
 	F_SLEW( 523200000, 1046400000,	  gpll3,	1,	0,	0),
 	F_SLEW( 550000000, 1100000000,	  gpll3,	1,	0,	0),
 	F_SLEW( 598000000, 1196000000,	  gpll3,	1,	0,	0),
+	F_SLEW( 650000000, 1300000000,    gpll3,	1,	0,	0),
 	F_END
 };
 
@@ -4176,7 +4180,7 @@ static void override_for_8917(int speed_bin)
 	} else {
 		OVERRIDE_FMAX5(gfx3d,
 			LOWER, 270000000, LOW, 400000000, NOMINAL, 484800000,
-			NOM_PLUS, 523200000, HIGH, 598000000);
+			NOM_PLUS, 523200000, HIGH, 650000000);
 		OVERRIDE_FTABLE(gfx3d, ftbl_gcc_oxili_gfx3d_clk, 8917);
 	}
 
@@ -4438,6 +4442,9 @@ static int msm_gcc_probe(struct platform_device *pdev)
 		override_for_8917(speed_bin);
 
 		if (compat_bin2) {
+			gfx3d_clk_src.freq_tbl =
+				ftbl_gcc_oxili_gfx3d_clk_8917_650MHz;
+			gfx3d_clk_src.c.fmax[VDD_DIG_HIGH] = 650000000;
 			blsp1_qup2_spi_apps_clk_src.freq_tbl =
 				ftbl_gcc_blsp1_2_qup1_4_spi_apps_clk_8917;
 			blsp1_qup3_spi_apps_clk_src.freq_tbl =
