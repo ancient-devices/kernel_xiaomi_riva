@@ -81,9 +81,6 @@ extern u64 jiffy_to_sched_clock(u64 *now, u64 *jiffy_sched_clock);
 extern u64 jiffy_to_ktime_ns(u64 *now, u64 *jiffy_ktime_ns);
 extern struct tick_device *tick_get_device(int cpu);
 
-extern void tick_freeze(void);
-extern void tick_unfreeze(void);
-
 # ifdef CONFIG_HIGH_RES_TIMERS
 extern int tick_init_highres(void);
 extern int tick_program_event(ktime_t expires, int force);
@@ -124,8 +121,6 @@ static inline int tick_oneshot_mode_active(void) { return 0; }
 
 #else /* CONFIG_GENERIC_CLOCKEVENTS */
 static inline void tick_init(void) { }
-static inline void tick_freeze(void) { }
-static inline void tick_unfreeze(void) { }
 static inline void tick_cancel_sched_timer(int cpu) { }
 static inline void tick_clock_notify(void) { }
 static inline int tick_check_oneshot_change(int allow_nohz) { return 0; }
@@ -146,50 +141,6 @@ extern void hotplug_cpu__broadcast_tick_pull(int dead_cpu);
 #else
 static inline void hotplug_cpu__broadcast_tick_pull(int dead_cpu) { }
 #endif
-
-enum tick_broadcast_mode {
-	TICK_BROADCAST_OFF,
-	TICK_BROADCAST_ON,
-	TICK_BROADCAST_FORCE,
-};
-
-enum tick_broadcast_state {
-	TICK_BROADCAST_EXIT,
-	TICK_BROADCAST_ENTER,
-};
-
-#ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
-extern void tick_broadcast_control(enum tick_broadcast_mode mode);
-#else
-static inline void tick_broadcast_control(enum tick_broadcast_mode mode) { }
-#endif /* BROADCAST */
-
-#if defined(CONFIG_GENERIC_CLOCKEVENTS_BROADCAST) && defined(CONFIG_TICK_ONESHOT)
-extern int tick_broadcast_oneshot_control(enum tick_broadcast_state state);
-#else
-static inline int tick_broadcast_oneshot_control(enum tick_broadcast_state state) { return 0; }
-#endif
-
-static inline void tick_broadcast_enable(void)
-{
-	tick_broadcast_control(TICK_BROADCAST_ON);
-}
-static inline void tick_broadcast_disable(void)
-{
-	tick_broadcast_control(TICK_BROADCAST_OFF);
-}
-static inline void tick_broadcast_force(void)
-{
-	tick_broadcast_control(TICK_BROADCAST_FORCE);
-}
-static inline int tick_broadcast_enter(void)
-{
-	return tick_broadcast_oneshot_control(TICK_BROADCAST_ENTER);
-}
-static inline void tick_broadcast_exit(void)
-{
-	tick_broadcast_oneshot_control(TICK_BROADCAST_EXIT);
-}
 
 extern void tick_nohz_idle_enter(void);
 extern void tick_nohz_idle_exit(void);
@@ -282,5 +233,6 @@ static inline void tick_nohz_task_switch(struct task_struct *tsk)
 	if (tick_nohz_full_enabled())
 		__tick_nohz_task_switch(tsk);
 }
+
 
 #endif
