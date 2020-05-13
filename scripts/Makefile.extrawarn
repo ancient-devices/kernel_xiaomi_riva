@@ -59,7 +59,6 @@ endif
 
 KBUILD_CFLAGS += $(warning)
 else
-
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS += -Wno-initializer-overrides
 KBUILD_CFLAGS += -Wno-unused-value
@@ -67,5 +66,6 @@ KBUILD_CFLAGS += -Wno-format
 KBUILD_CFLAGS += -Wno-sign-compare
 KBUILD_CFLAGS += -Wno-format-zero-length
 KBUILD_CFLAGS += -Wno-uninitialized
+KBUILD_CFLAGS += $(call cc-disable-warning, pointer-to-enum-cast)
 endif
 endif
