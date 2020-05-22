@@ -334,6 +334,7 @@ config SUSPEND_SKIP_SYNC
 	bool "Skip kernel's sys_sync() on suspend to RAM/standby"
 	depends on SUSPEND
 	depends on EXPERT
+	default y
 	help
 	  Skip the kernel sys_sync() before freezing user processes.
 	  Some systems prefer not to pay this cost on every invocation
