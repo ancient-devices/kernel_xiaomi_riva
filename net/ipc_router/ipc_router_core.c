@@ -3994,9 +3994,6 @@ static void *ipc_router_create_log_ctx(char *name)
 	if (!IS_ENABLED(CONFIG_IPC_LOGGING))
 		return NULL;
 
-	if (!IS_ENABLED(CONFIG_IPC_LOGGING))
-		return NULL;
-
 	sub_log_ctx = kmalloc(sizeof(struct ipc_rtr_log_ctx),
 				GFP_KERNEL);
 	if (!sub_log_ctx)
