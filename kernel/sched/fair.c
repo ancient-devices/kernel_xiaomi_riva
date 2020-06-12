@@ -2182,8 +2182,18 @@ static long calc_cfs_shares(struct cfs_rq *cfs_rq, struct task_group *tg)
 {
 	long tg_weight, load, shares;
 
-	tg_weight = calc_tg_weight(tg, cfs_rq);
-	load = cfs_rq->load.weight;
+	/*
+	 * This really should be: cfs_rq->avg.load_avg, but instead we use
+	 * cfs_rq->load.weight, which is its upper bound. This helps ramp up
+	 * the shares for small weight interactive tasks.
+	 */
+	load = scale_load_down(cfs_rq->load.weight);
+
+	tg_weight = atomic_long_read(&tg->load_avg);
+
+	/* Ensure tg_weight >= load */
+	tg_weight -= cfs_rq->tg_load_contrib;
+	tg_weight += load;
 
 	shares = (tg->shares * load);
 	if (tg_weight)
@@ -2202,6 +2212,7 @@ static inline long calc_cfs_shares(struct cfs_rq *cfs_rq, struct task_group *tg)
 	return tg->shares;
 }
 # endif /* CONFIG_SMP */
+
 static void reweight_entity(struct cfs_rq *cfs_rq, struct sched_entity *se,
 			    unsigned long weight)
 {
