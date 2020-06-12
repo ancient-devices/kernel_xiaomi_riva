@@ -244,6 +244,8 @@ static struct sk_buff **gue_gro_receive(struct sk_buff **head,
 
 	pp = call_gro_receive(ops->callbacks.gro_receive, head, skb);
 
+	pp = ops->callbacks.gro_receive(head, skb);
+
 out_unlock:
 	rcu_read_unlock();
 out:
