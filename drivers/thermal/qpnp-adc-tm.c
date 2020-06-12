@@ -3002,21 +3002,21 @@ int32_t qpnp_adc_tm_disable_chan_meas(struct qpnp_adc_tm_chip *chip,
 					QPNP_BTM_Mn_HIGH_THR_INT_EN, false);
 		if (rc < 0) {
 			pr_err("high thr disable err:%d\n", btm_chan_num);
-			goto fail;
+			return rc;
 		}
 
 		rc = qpnp_adc_tm_reg_update(chip, QPNP_BTM_Mn_EN(btm_chan_num),
 					QPNP_BTM_Mn_LOW_THR_INT_EN, false);
 		if (rc < 0) {
 			pr_err("low thr disable err:%d\n", btm_chan_num);
-			goto fail;
+			return rc;
 		}
 
 		rc = qpnp_adc_tm_reg_update(chip, QPNP_BTM_Mn_EN(btm_chan_num),
 					QPNP_BTM_Mn_MEAS_EN, false);
 		if (rc < 0) {
 			pr_err("multi measurement disable failed\n");
-			goto fail;
+			return rc;
 		}
 	}
 
@@ -3251,7 +3251,7 @@ static int qpnp_adc_tm_probe(struct spmi_device *spmi)
 				pr_err("thermal device register failed.\n");
 		}
 		chip->sensor[sen_idx].req_wq = alloc_workqueue(
-				"qpnp_adc_notify_wq", WQ_HIGHPRI, 0);
+				"qpnp_adc_notify_wq", WQ_UNBOUND, 1);
 		if (!chip->sensor[sen_idx].req_wq) {
 			pr_err("Requesting priority wq failed\n");
 			goto fail;
@@ -3262,19 +3262,19 @@ static int qpnp_adc_tm_probe(struct spmi_device *spmi)
 	}
 	chip->max_channels_available = count_adc_channel_list;
 	chip->high_thr_wq = alloc_workqueue("qpnp_adc_tm_high_thr_wq",
-							WQ_HIGHPRI, 0);
+							WQ_UNBOUND, 1);
 	if (!chip->high_thr_wq) {
 		pr_err("Requesting high thr priority wq failed\n");
 		goto fail;
 	}
 	chip->low_thr_wq = alloc_workqueue("qpnp_adc_tm_low_thr_wq",
-							WQ_HIGHPRI, 0);
+							WQ_UNBOUND, 1);
 	if (!chip->low_thr_wq) {
 		pr_err("Requesting low thr priority wq failed\n");
 		goto fail;
 	}
 	chip->thr_wq = alloc_workqueue("qpnp_adc_tm_thr_wq",
-						WQ_HIGHPRI, 0);
+						WQ_UNBOUND, 1);
 	if (!chip->thr_wq) {
 		pr_err("Requesting thr priority wq failed\n");
 		goto fail;

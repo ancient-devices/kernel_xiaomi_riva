@@ -42,7 +42,7 @@ enum {
 	SHM_INFO_FLAG = 0x1,
 	SHM_DEBUG_FLAG = 0x2,
 };
-static int shm_debug_mask = SHM_INFO_FLAG;
+static int shm_debug_mask;
 module_param_named(debug_mask, shm_debug_mask,
 		   int, S_IRUGO | S_IWUSR | S_IWGRP);
 static int shm_default_timeout_ms = 2000;
@@ -901,12 +901,13 @@ static int __init system_health_monitor_init(void)
 {
 	int rc;
 
+#ifdef CONFIG_IPC_LOGGING
 	shm_ilctxt = ipc_log_context_create(SHM_ILCTXT_NUM_PAGES, "shm", 0);
 	if (!shm_ilctxt) {
 		SHM_ERR("%s: Unable to create SHM logging context\n", __func__);
 		shm_debug_mask = 0;
 	}
-
+#endif
 	rc = platform_driver_register(&system_health_monitor_driver);
 	if (rc) {
 		SHM_ERR("%s: system_health_monitor_driver register failed %d\n",

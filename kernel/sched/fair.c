@@ -2564,7 +2564,7 @@ int sched_set_init_task_load(struct task_struct *p, int init_load_pct)
 
 static inline int upmigrate_discouraged(struct task_struct *p)
 {
-	return task_group(p)->upmigrate_discouraged
+	return task_group(p)->upmigrate_discouraged;
 }
 
 #else
@@ -6343,25 +6343,19 @@ static long effective_load(struct task_group *tg, int cpu, long wl, long wg)
 		return wl;
 
 	for_each_sched_entity(se) {
-		struct cfs_rq *cfs_rq = se->my_q;
-		long W, w = cfs_rq_load_avg(cfs_rq);
+		long w, W;
 
-		tg = cfs_rq->tg;
+		tg = se->my_q->tg;
 
 		/*
 		 * W = @wg + \Sum rw_j
 		 */
-		W = wg + atomic_long_read(&tg->load_avg);
-
-		/* Ensure \Sum rw_j >= rw_i */
-		W -= cfs_rq->tg_load_avg_contrib;
-		W += w;
+		W = wg + calc_tg_weight(tg, se->my_q);
 
 		/*
 		 * w = rw_i + @wl
 		 */
-
-		w += wl
+		w = se->my_q->load.weight + wl;
 
 		/*
 		 * wl = S * s'_i; see (2)
